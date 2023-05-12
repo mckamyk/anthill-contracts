@@ -26,6 +26,7 @@ contract Registry is Ownable {
         safeSingleton = _safeSingleton;
 
         SafeProxy rootProxy = _addRole("root");
+        transferOwnership(address(rootProxy));
 
         emit RegistryCreated(_name);
     }
@@ -43,7 +44,7 @@ contract Registry is Ownable {
     }
 
     function _addRole(string memory _name) private returns (SafeProxy roleProxy) {
-        SafeProxy foo = proxyFactory.createProxyWithNonce(safeSingleton, new bytes(0), 14321);
+        roleProxy = proxyFactory.createProxyWithNonce(safeSingleton, new bytes(0), 14321);
         roleSafes.push(roleProxy);
         roleInfo[address(roleProxy)] = RoleInfo({name: _name, addr: address(roleProxy)});
     }

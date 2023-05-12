@@ -24,8 +24,10 @@ contract CounterTest is Test {
     function testRootRoleOwnerIsSender() public {
         RoleInfo memory root = registry.getRoles()[0];
         Safe rootSafe = Safe(payable(root.addr));
-        console.log(root.addr);
+        console.logAddress(root.addr);
+        console.logAddress(msg.sender);
         address firstRootOwner = rootSafe.getOwners()[0];
+        console.logAddress(firstRootOwner);
         assertEq(msg.sender, firstRootOwner);
     }
 }
