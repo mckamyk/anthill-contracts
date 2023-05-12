@@ -6,12 +6,14 @@ import "../src/Registry.sol";
 
 import "safe-contracts/Safe.sol";
 
-contract CounterTest is Test {
+contract RegistryTest is Test {
     Registry public registry;
 
     function setUp() public {
+        address[] memory owners = new address[](1);
+        owners[0] = address(this);
         registry =
-        new Registry("Test Registry", 0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2, 0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552);
+        new Registry("Test Registry", owners, 1, 0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67, 0xc962E67D9490E154D81181879ddf4CD3b65D2132);
     }
 
     function testRegistryOwnerIsRootRole() public {
@@ -21,13 +23,11 @@ contract CounterTest is Test {
         assertEq(owner, root.addr);
     }
 
-    function testRootRoleOwnerIsSender() public {
+    function testRootRoleOwnerIsCreator() public {
         RoleInfo memory root = registry.getRoles()[0];
         Safe rootSafe = Safe(payable(root.addr));
-        console.logAddress(root.addr);
-        console.logAddress(msg.sender);
-        address firstRootOwner = rootSafe.getOwners()[0];
-        console.logAddress(firstRootOwner);
-        assertEq(msg.sender, firstRootOwner);
+        address[] memory owners = rootSafe.getOwners();
+        address firstRootOwner = owners[0];
+        assertEq(address(this), firstRootOwner);
     }
 }

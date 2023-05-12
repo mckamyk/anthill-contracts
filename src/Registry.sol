@@ -11,22 +11,31 @@ struct RoleInfo {
 }
 
 contract Registry is Ownable {
+    SafeProxyFactory proxyFactory;
+    address safeSingleton;
+
     string public name;
     SafeProxy[] public roleSafes;
     mapping(address => RoleInfo) public roleInfo;
-    SafeProxyFactory proxyFactory;
-    address safeSingleton;
 
     event RegistryCreated(string _name);
     event RoleAdded(string _name, address _role);
 
-    constructor(string memory _name, address _proxyFactory, address _safeSingleton) {
+    constructor(
+        string memory _name,
+        address[] memory _owners,
+        uint256 threshold,
+        address _proxyFactory,
+        address _safeSingleton
+    ) {
         name = _name;
         proxyFactory = SafeProxyFactory(_proxyFactory);
         safeSingleton = _safeSingleton;
 
         SafeProxy rootProxy = _addRole("root");
         transferOwnership(address(rootProxy));
+        Safe rootSafe = Safe(payable(rootProxy));
+        rootSafe.setup(_owners, threshold, address(0), new bytes(0), address(0), address(0), 0, payable(0));
 
         emit RegistryCreated(_name);
     }
