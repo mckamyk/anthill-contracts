@@ -12,7 +12,6 @@ contract RegistryScript is Script {
 
     function run() public {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
-        console.log(privateKey);
         vm.startBroadcast(privateKey);
 
         RegistryFactory factory =

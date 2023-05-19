@@ -14,10 +14,11 @@ contract RegistryFactoryTest is Test {
             new RegistryFactory(0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67, 0xc962E67D9490E154D81181879ddf4CD3b65D2132);
     }
 
-    function dep() internal returns (Registry registry) {
+    function dep() internal returns (Registry _registry) {
         address[] memory owners = new address[](1);
         owners[0] = address(this);
-        registry = registryFactory.deployRegistry("Test Registry", owners, 1);
+        address registry = registryFactory.deployRegistry("Test Registry", owners, 1, 234123);
+        _registry = Registry(registry);
     }
 
     function testDeployRegistry() public {

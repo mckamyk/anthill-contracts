@@ -27,7 +27,7 @@ contract Registry is Ownable {
         uint256 threshold,
         address _proxyFactory,
         address _safeSingleton,
-        uint256 nonce
+        uint256 _nonce
     ) {
         name = _name;
         proxyFactory = SafeProxyFactory(_proxyFactory);
@@ -53,13 +53,13 @@ contract Registry is Ownable {
         return roleInfo[_role];
     }
 
-    function _addRole(string memory _name, uint256 memory _nonce) private returns (SafeProxy roleProxy) {
+    function _addRole(string memory _name, uint256 _nonce) private returns (SafeProxy roleProxy) {
         roleProxy = proxyFactory.createProxyWithNonce(safeSingleton, new bytes(0), _nonce);
         roleSafes.push(roleProxy);
         roleInfo[address(roleProxy)] = RoleInfo({name: _name, addr: address(roleProxy)});
     }
 
-    function addRole(string calldata _name, uint256 memory _nonce) public returns (RoleInfo memory info) {
+    function addRole(string calldata _name, uint256 _nonce) public returns (RoleInfo memory info) {
         SafeProxy roleProxy = _addRole(_name, _nonce);
         info = roleInfo[address(roleProxy)];
     }

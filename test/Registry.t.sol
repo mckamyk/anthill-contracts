@@ -13,7 +13,7 @@ contract RegistryTest is Test {
         address[] memory owners = new address[](1);
         owners[0] = address(this);
         registry =
-        new Registry("Test Registry", owners, 1, 0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67, 0xc962E67D9490E154D81181879ddf4CD3b65D2132);
+        new Registry("Test Registry", owners, 1, 0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67, 0xc962E67D9490E154D81181879ddf4CD3b65D2132, 3098132);
     }
 
     function testRegistryOwnerIsRootRole() public {

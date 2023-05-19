@@ -17,14 +17,15 @@ contract RegistryFactory {
         safeSingleton = _safeSingleton;
     }
 
-    function deployRegistry(string memory _name, address[] memory _owners, uint256 threshold)
+    function deployRegistry(string memory _name, address[] memory _owners, uint256 threshold, uint256 _nonce)
         public
-        returns (Registry registry)
+        returns (address)
     {
-        registry = new Registry(_name, _owners, threshold, proxyFactory, safeSingleton);
+        Registry registry = new Registry(_name, _owners, threshold, proxyFactory, safeSingleton, _nonce);
         totalRegistries++;
         userRegistries[msg.sender].push(registry);
         emit RegistryCreated(address(registry), msg.sender);
+        return address(registry);
     }
 
     function getUserRegistries() public view returns (Registry[] memory _registries) {
