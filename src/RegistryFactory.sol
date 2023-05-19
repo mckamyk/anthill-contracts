@@ -30,4 +30,8 @@ contract RegistryFactory {
     function getUserRegistries() public view returns (Registry[] memory _registries) {
         return userRegistries[msg.sender];
     }
+
+    function getUserRegistries(address _user) public view returns (Registry[] memory _registries) {
+        return userRegistries[_user];
+    }
 }

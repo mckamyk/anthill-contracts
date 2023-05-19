@@ -26,13 +26,14 @@ contract Registry is Ownable {
         address[] memory _owners,
         uint256 threshold,
         address _proxyFactory,
-        address _safeSingleton
+        address _safeSingleton,
+        uint256 nonce
     ) {
         name = _name;
         proxyFactory = SafeProxyFactory(_proxyFactory);
         safeSingleton = _safeSingleton;
 
-        SafeProxy rootProxy = _addRole("root");
+        SafeProxy rootProxy = _addRole("root", _nonce);
         transferOwnership(address(rootProxy));
         Safe rootSafe = Safe(payable(rootProxy));
         rootSafe.setup(_owners, threshold, address(0), new bytes(0), address(0), address(0), 0, payable(0));
@@ -52,14 +53,14 @@ contract Registry is Ownable {
         return roleInfo[_role];
     }
 
-    function _addRole(string memory _name) private returns (SafeProxy roleProxy) {
-        roleProxy = proxyFactory.createProxyWithNonce(safeSingleton, new bytes(0), 14321);
+    function _addRole(string memory _name, uint256 memory _nonce) private returns (SafeProxy roleProxy) {
+        roleProxy = proxyFactory.createProxyWithNonce(safeSingleton, new bytes(0), _nonce);
         roleSafes.push(roleProxy);
         roleInfo[address(roleProxy)] = RoleInfo({name: _name, addr: address(roleProxy)});
     }
 
-    function addRole(string calldata _name) public returns (RoleInfo memory info) {
-        SafeProxy roleProxy = _addRole(_name);
+    function addRole(string calldata _name, uint256 memory _nonce) public returns (RoleInfo memory info) {
+        SafeProxy roleProxy = _addRole(_name, _nonce);
         info = roleInfo[address(roleProxy)];
     }
 }
