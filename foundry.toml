@@ -3,4 +3,6 @@ src = "src"
 out = "out"
 libs = ["lib"]
 
+broadcast = "broadcast"
+eth_rpc_url = "http://localhost:8545"
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
