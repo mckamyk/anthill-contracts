@@ -6,16 +6,18 @@ import "../src/RegistryRouter.sol";
 import "../src/RegistryFactory.sol";
 
 contract RegistryScript is Script {
-    RegistryRouter public registryRouter = RegistryRouter(0x610178dA211FEF7D417bC0e6FeD39F05609AD788);
+    RegistryRouter public registryRouter;
 
-    function setUp() public {}
+    function setUp() public {
+        registryRouter = new RegistryRouter();
+    }
 
     function run() public {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(privateKey);
 
         RegistryFactory factory =
-            new RegistryFactory(0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2, 0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552);
+            new RegistryFactory(0x4e1DCf7AD4e460CfD30791CCC4F9c8a4f820ec67, 0xc962E67D9490E154D81181879ddf4CD3b65D2132);
 
         address addr = address(factory);
         registryRouter.setAddress(addr);

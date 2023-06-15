@@ -35,4 +35,18 @@ contract RegistryFactory {
     function getUserRegistries(address _user) public view returns (Registry[] memory _registries) {
         return userRegistries[_user];
     }
+
+    function getUserRegistryAddresses() public view returns (address[] memory _registries) {
+        Registry[] memory regs = getUserRegistries();
+        for (uint256 i; i < regs.length; i++) {
+            _registries[i] = address(regs[i]);
+        }
+    }
+
+    function getUserRegistryAddresses(address _user) public view returns (address[] memory _registries) {
+        Registry[] memory regs = getUserRegistries(_user);
+        for (uint256 i; i < regs.length; i++) {
+            _registries[i] = address(regs[i]);
+        }
+    }
 }

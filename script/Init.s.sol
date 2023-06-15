@@ -19,6 +19,7 @@ contract Init is Script {
         router.setAddress(address(factory));
 
         console.log("RegistryRouter address: %s", address(router));
+        console.log("Factory address: %s", router.getAddress());
 
         vm.stopBroadcast();
     }
